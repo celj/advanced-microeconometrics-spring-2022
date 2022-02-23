@@ -111,7 +111,15 @@ MTE &= E \left[ \beta \mid I = 0,\ V = v \right] \\
 
 ## Instrumental Variables {-}
 
+$$
+\hat{\beta}_{\text{IV}} (J(Z)) = \frac{\text{Cov}(J(Z), Y)}{\text{Cov}(J(Z), D)} \overset{p}{\longrightarrow} \beta
+$$
+
 ## Ordinary Least Squares {-}
+
+$$
+\hat{\beta}_{\text{OLS}} = \frac{\text{Cov}(Y, D)}{\text{Var}(D)} \implies \hat{\beta}_{\text{OLS}} = \left( D^T D \right)^{-1} D^T Y
+$$
 
 ## Local Average Treatment Effect {-}
 
@@ -273,6 +281,42 @@ plt.1
 ```
 
 # Parametrization 2
+
+## $LATE(z_1 = -2, z'_1 = 1)$
+
+```{r}
+print(1234)
+```
+
+## $LATE(z_2 = 0, z'_2 = 2)$
+
+```{r}
+print(1234)
+```
+
+## $IV(Z_1)$
+
+```{r}
+beta.IV.Z1 <- cov(Z[, 2], Y) / cov(Z[, 2], D)
+```
+
+$\hat{\beta}_{\text{IV}} (Z_1) = `r beta.IV.Z1`$.
+
+## $IV(Z_2)$
+
+```{r}
+beta.IV.Z2 <- cov(Z[, 3], Y) / cov(Z[, 3], D)
+```
+
+$\hat{\beta}_{\text{IV}} (Z_2) = `r beta.IV.Z2`$.
+
+## $OLS$
+
+```{r}
+beta.OLS <- cov(D, Y) / var(D)
+```
+
+$\hat{\beta}_{\text{OLS}} = `r beta.OLS`$.
 
 # GMM
 

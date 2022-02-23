@@ -192,9 +192,17 @@ MTE &= E \left[ \beta \mid I = 0,\ V = v \right] \\
 \subsection*{Instrumental Variables}\label{instrumental-variables}}
 \addcontentsline{toc}{subsection}{Instrumental Variables}
 
+\[
+\hat{\beta}_{\text{IV}} (J(Z)) = \frac{\text{Cov}(J(Z), Y)}{\text{Cov}(J(Z), D)} \overset{p}{\longrightarrow} \beta
+\]
+
 \hypertarget{ordinary-least-squares}{%
 \subsection*{Ordinary Least Squares}\label{ordinary-least-squares}}
 \addcontentsline{toc}{subsection}{Ordinary Least Squares}
+
+\[
+\hat{\beta}_{\text{OLS}} = \frac{\text{Cov}(Y, D)}{\text{Var}(D)} \implies \hat{\beta}_{\text{OLS}} = \left( D^T D \right)^{-1} D^T Y
+\]
 
 \hypertarget{local-average-treatment-effect}{%
 \subsection*{Local Average Treatment
@@ -332,6 +340,65 @@ Y = DY_1 + (1 - D)Y_0.
 
 \hypertarget{parametrization-2}{%
 \section{Parametrization 2}\label{parametrization-2}}
+
+\hypertarget{latez_1--2-z_1-1}{%
+\subsection{\texorpdfstring{\(LATE(z_1 = -2, z'_1 = 1)\)}{LATE(z\_1 = -2, z'\_1 = 1)}}\label{latez_1--2-z_1-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1234
+\end{verbatim}
+
+\hypertarget{latez_2-0-z_2-2}{%
+\subsection{\texorpdfstring{\(LATE(z_2 = 0, z'_2 = 2)\)}{LATE(z\_2 = 0, z'\_2 = 2)}}\label{latez_2-0-z_2-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1234
+\end{verbatim}
+
+\hypertarget{ivz_1}{%
+\subsection{\texorpdfstring{\(IV(Z_1)\)}{IV(Z\_1)}}\label{ivz_1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{beta.IV.Z1 }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{2}\NormalTok{], Y) }\SpecialCharTok{/} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{2}\NormalTok{], D)}
+\end{Highlighting}
+\end{Shaded}
+
+\(\hat{\beta}_{\text{IV}} (Z_1) = 0.2032\).
+
+\hypertarget{ivz_2}{%
+\subsection{\texorpdfstring{\(IV(Z_2)\)}{IV(Z\_2)}}\label{ivz_2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{beta.IV.Z2 }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{3}\NormalTok{], Y) }\SpecialCharTok{/} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{3}\NormalTok{], D)}
+\end{Highlighting}
+\end{Shaded}
+
+\(\hat{\beta}_{\text{IV}} (Z_2) = 0.2046\).
+
+\hypertarget{ols}{%
+\subsection{\texorpdfstring{\(OLS\)}{OLS}}\label{ols}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{beta.OLS }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Y, D) }\SpecialCharTok{/} \FunctionTok{var}\NormalTok{(D)}
+\end{Highlighting}
+\end{Shaded}
+
+\(\hat{\beta}_{\text{OLS}} = 0.2186\).
 
 \hypertarget{gmm}{%
 \section{GMM}\label{gmm}}
