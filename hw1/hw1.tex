@@ -1,0 +1,357 @@
+\documentclass[9pt,twocolumn,twoside,]{pnas-new}
+
+% Use the lineno option to display guide line numbers if required.
+% Note that the use of elements such as single-column equations
+% may affect the guide line number alignment.
+
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Pandoc syntax highlighting
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+
+% tightlist command for lists without linebreak
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+
+\templatetype{pnasmathematics}  % Choose template
+
+\title{Problem Set 1}
+
+\author[]{Carlos Enrique Lezama Jacinto}
+
+  \affil[]{Instituto Tecnológico Autónomo de México}
+
+
+% Please give the surname of the lead author for the running footer
+\leadauthor{}
+
+% Please add here a significance statement to explain the relevance of your work
+\significancestatement{}
+
+
+\authorcontributions{}
+
+
+
+\correspondingauthor{\textsuperscript{} My solutions to the first
+problem set in Advanced Microeconometrics (ECO -- 20513).}
+
+% Keywords are not mandatory, but authors are strongly encouraged to provide them. If provided, please include two to five keywords, separated by the pipe symbol, e.g:
+
+
+\begin{abstract}
+
+\end{abstract}
+
+\dates{This manuscript was compiled on \today}
+\doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
+
+\begin{document}
+
+% Optional adjustment to line up main text (after abstract) of first page with line numbers, when using both lineno and twocolumn options.
+% You should only change this length when you've finalised the article contents.
+\verticaladjustment{-2pt}
+
+
+
+\maketitle
+\thispagestyle{firststyle}
+\ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+
+% If your first paragraph (i.e. with the \dropcap) contains a list environment (quote, quotation, theorem, definition, enumerate, itemize...), the line after the list may have some extra indentation. If this is the case, add \parshape=0 to the end of the list environment.
+
+\acknow{}
+
+\newcommand{\ind}{\perp\!\!\!\!\perp}
+
+\hypertarget{the-model}{%
+\section*{The Model}\label{the-model}}
+\addcontentsline{toc}{section}{The Model}
+
+Assume that the economic model generating the data for potential
+outcomes is of the form:
+
+\begin{align*}
+Y_1 &= \alpha + \varphi + U_1, \\
+Y_0 &= \alpha + U_0,
+\end{align*}
+
+where \(U_1\) and \(U_0\) represent the unobservables in the potential
+outcome equations and \(\varphi\) represents the benefit associated with
+the treatment (\(D = 1\)). Individuals decide whether or not to receive
+the treatment (\(D = 1\) or \(D = 0\)) based on a latent variable \(I\):
+
+\[
+I = Z \gamma + V,
+\]
+
+where \(Z\) and \(V\) represent observables and unobservables,
+respectively. Thus, we can define a binary variable \(D\) indicating
+treatment status,
+
+\[
+D = \mathds{1}\left[ I \geq 0\right].
+\]
+
+Finally, we assume that the error terms in the model are not independent
+even conditioning on the observables,
+i.e.~\(U_1 \not\perp\!\!\!\!\perp U_0 \not\perp\!\!\!\!\perp V \mid Z\),
+but \((U_1, U_0, V) \perp\!\!\!\!\perp Z\).
+
+\hypertarget{treatment-parameters}{%
+\section{Treatment Parameters}\label{treatment-parameters}}
+
+Let \(\beta = Y_1 - Y_0 = \varphi + U_1 - U_0\) such that, in regression
+notation, \(Y = \alpha + \beta D + \varepsilon\) where
+\(\varepsilon = U_0\).
+
+\hypertarget{average-treatment-effect}{%
+\subsection*{Average Treatment Effect}\label{average-treatment-effect}}
+\addcontentsline{toc}{subsection}{Average Treatment Effect}
+
+\begin{align*}
+ATE &= E \left[ \beta \right] \\
+&= E \left[ \varphi + U_1 - U_0 \right] \\
+&= \varphi
+\end{align*}
+
+\hypertarget{treatment-on-the-treated}{%
+\subsection*{Treatment on the Treated}\label{treatment-on-the-treated}}
+\addcontentsline{toc}{subsection}{Treatment on the Treated}
+
+\begin{align*}
+TT &= E \left[ \beta \mid D = 1 \right] \\
+&= E \left[ \varphi + U_1 - U_0 \mid Z \gamma + V \geq 0 \right] \\
+&= \varphi + E \left[ U_1 - U_0 \mid V \geq - Z \gamma \right]
+\end{align*}
+
+\hypertarget{treatment-on-the-untreated}{%
+\subsection*{Treatment on the
+Untreated}\label{treatment-on-the-untreated}}
+\addcontentsline{toc}{subsection}{Treatment on the Untreated}
+
+\begin{align*}
+TUT &= E \left[ \beta \mid D = 0 \right] \\
+&= E \left[ \varphi + U_1 - U_0 \mid Z \gamma + V < 0 \right] \\
+&= \varphi + E \left[ U_1 - U_0 \mid V < - Z \gamma \right]
+\end{align*}
+
+\hypertarget{marginal-treatment-effect}{%
+\subsection*{Marginal Treatment
+Effect}\label{marginal-treatment-effect}}
+\addcontentsline{toc}{subsection}{Marginal Treatment Effect}
+
+\begin{align*}
+MTE &= E \left[ \beta \mid I = 0,\ V = v \right] \\
+&= E \left[ \varphi + U_1 - U_0 \mid I = 0,\ V = v \right] \\
+&= \varphi + E \left[ U_1 - U_0 \mid Z \gamma = - V,\ V = v \right]
+\end{align*}
+
+\hypertarget{instrumental-variables}{%
+\subsection*{Instrumental Variables}\label{instrumental-variables}}
+\addcontentsline{toc}{subsection}{Instrumental Variables}
+
+\hypertarget{ordinary-least-squares}{%
+\subsection*{Ordinary Least Squares}\label{ordinary-least-squares}}
+\addcontentsline{toc}{subsection}{Ordinary Least Squares}
+
+\hypertarget{local-average-treatment-effect}{%
+\subsection*{Local Average Treatment
+Effect}\label{local-average-treatment-effect}}
+\addcontentsline{toc}{subsection}{Local Average Treatment Effect}
+
+\begin{align*}
+LATE &= E \left[ \beta \mid D(z) = 0, D(z') = 1 \right] \\
+&= E \left[ \beta \mid z \gamma < - V \leq z' \gamma \right] \\
+&= \varphi + E \left[ U_1 - U_0 \mid - z' \gamma \leq V < - z \gamma \right]
+\end{align*}
+
+\hypertarget{some-closed-form-expressions}{%
+\section{Some closed form
+expressions}\label{some-closed-form-expressions}}
+
+Suppose that the error terms in the model have the following structure:
+
+\begin{align*}
+U_1 &= \sigma_1 \epsilon, \\
+U_0 &= \sigma_0 \epsilon, \\
+V &= \sigma^*_V \epsilon, \\
+\epsilon &\sim \mathcal{N} (0, 1).
+\end{align*}
+
+So, we can say that
+
+\begin{align*}
+TT &= \varphi + E \left[ U_1 - U_0 \mid V \geq - Z \gamma \right] \\
+&= \varphi + E \left[ \epsilon (\sigma_1 - \sigma_0) \mid \epsilon \geq \frac{- Z \gamma}{\sigma^*_V} \right] \\
+&= \varphi + (\sigma_1 - \sigma_0) E \left[ \epsilon \mid \epsilon \geq \frac{- Z \gamma}{\sigma^*_V} \right] \\
+&= \varphi + (\sigma_1 - \sigma_0) \frac{\phi \left( - Z \gamma / \sigma^*_V \right)}{1 - \Phi \left( - Z \gamma / \sigma^*_V \right) },
+\end{align*}
+
+and
+
+\begin{align*}
+TUT &= \varphi + E \left[ U_1 - U_0 \mid V < - Z \gamma \right] \\
+&= \varphi + E \left[ \epsilon (\sigma_1 - \sigma_0) \mid \epsilon < \frac{- Z \gamma}{\sigma^*_V} \right] \\
+&= \varphi + (\sigma_1 - \sigma_0) E \left[ \epsilon \mid \epsilon < \frac{- Z \gamma}{\sigma^*_V} \right] \\
+&= \varphi - (\sigma_1 - \sigma_0) \frac{\phi \left( - Z \gamma / \sigma^*_V \right)}{\Phi \left( - Z \gamma / \sigma^*_V \right) } \\
+&= \varphi + (\sigma_0 - \sigma_1) \frac{\phi \left( - Z \gamma / \sigma^*_V \right)}{\Phi \left( - Z \gamma / \sigma^*_V \right) }.
+\end{align*}
+
+\hypertarget{parametrization-1}{%
+\section{Parametrization 1}\label{parametrization-1}}
+
+Now, to add more structure to the problem, suppose that
+\(Z = (1, Z_1, Z_2)\), and \(\gamma = (\gamma_0, \gamma_1, \gamma_2)\).
+Also, suppose that
+
+\begin{align*}
+\gamma_0 = 0.2, && \gamma_1 = 0.3, && \gamma_2 = 0.1, \\
+\sigma_1 = 0.012, && \sigma_0 = 0.05, && \sigma^*_V = 1, \\
+\alpha = 0.02, && \varphi = 0.2.
+\end{align*}
+
+Finally,
+
+\begin{align*}
+Z_1 &\sim \mathcal{N}(-1, 9), \\
+Z_2 &\sim \mathcal{N} (1, 9),
+\end{align*}
+
+where \(Z_1 \perp\!\!\!\!\perp Z_2\). Since we only observe either
+\(Y_1\) or \(Y_0\), the econometrician observes the outcome described as
+follows:
+
+\[
+Y = DY_1 + (1 - D)Y_0.
+\]
+
+\newpage
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+
+\NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{5000} \CommentTok{\# random sample observations}
+
+\NormalTok{alpha }\OtherTok{\textless{}{-}} \FloatTok{0.02}
+\NormalTok{phi }\OtherTok{\textless{}{-}} \FloatTok{0.2}
+
+\NormalTok{g }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{))}
+\NormalTok{sigma1 }\OtherTok{\textless{}{-}} \FloatTok{0.012}
+\NormalTok{sigma0 }\OtherTok{\textless{}{-}} \FloatTok{0.05}
+\NormalTok{sigmaV }\OtherTok{\textless{}{-}} \DecValTok{1}
+
+\NormalTok{eps }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(N)}
+
+\NormalTok{U1 }\OtherTok{\textless{}{-}}\NormalTok{ sigma1 }\SpecialCharTok{*}\NormalTok{ eps}
+\NormalTok{U0 }\OtherTok{\textless{}{-}}\NormalTok{ sigma0 }\SpecialCharTok{*}\NormalTok{ eps}
+\NormalTok{V }\OtherTok{\textless{}{-}}\NormalTok{ sigmaV }\SpecialCharTok{*}\NormalTok{ eps}
+
+\NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, N),}
+           \FunctionTok{rnorm}\NormalTok{(N, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{9}\NormalTok{),}
+           \FunctionTok{rnorm}\NormalTok{(N, }\DecValTok{1}\NormalTok{, }\DecValTok{9}\NormalTok{))}
+
+\NormalTok{I }\OtherTok{\textless{}{-}}\NormalTok{ (Z }\SpecialCharTok{\%*\%}\NormalTok{ g) }\SpecialCharTok{+}\NormalTok{ V}
+\NormalTok{D }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(I }\SpecialCharTok{\textgreater{}=} \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+
+\NormalTok{Y1 }\OtherTok{\textless{}{-}}\NormalTok{ alpha }\SpecialCharTok{+}\NormalTok{ phi }\SpecialCharTok{+}\NormalTok{ U1}
+\NormalTok{Y0 }\OtherTok{\textless{}{-}}\NormalTok{ alpha }\SpecialCharTok{+}\NormalTok{ U0}
+
+\NormalTok{Y }\OtherTok{\textless{}{-}}\NormalTok{ (D }\SpecialCharTok{*}\NormalTok{ Y1) }\SpecialCharTok{+}\NormalTok{ ((}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ D) }\SpecialCharTok{*}\NormalTok{ Y0)}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\StringTok{\textquotesingle{}beta\textquotesingle{}} \OtherTok{=}\NormalTok{ Y1 }\SpecialCharTok{{-}}\NormalTok{ Y0,}
+                 \StringTok{\textquotesingle{}decision\textquotesingle{}} \OtherTok{=}\NormalTok{ D,}
+                 \StringTok{\textquotesingle{}y1\textquotesingle{}} \OtherTok{=}\NormalTok{ Y1,}
+                 \StringTok{\textquotesingle{}y0\textquotesingle{}} \OtherTok{=}\NormalTok{ Y0,}
+                 \StringTok{\textquotesingle{}net utility\textquotesingle{}} \OtherTok{=}\NormalTok{ I)}
+
+\NormalTok{ATE }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(beta) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{mean}\NormalTok{()}
+
+\NormalTok{TT }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(decision }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(beta) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mean}\NormalTok{()}
+
+\NormalTok{TUT }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(decision }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(beta) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mean}\NormalTok{()}
+
+\NormalTok{MTE }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(net.utility }\SpecialCharTok{{-}}\NormalTok{ V) }\SpecialCharTok{\textless{}=} \FloatTok{0.01}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(beta) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mean}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth,]{hw1_files/figure-latex/unnamed-chunk-2-1} \end{center}
+
+\hypertarget{parametrization-2}{%
+\section{Parametrization 2}\label{parametrization-2}}
+
+\hypertarget{gmm}{%
+\section{GMM}\label{gmm}}
+
+\hypertarget{likelihood-function}{%
+\section{Likelihood Function}\label{likelihood-function}}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+\hypertarget{maximum-likelihood}{%
+\section{Maximum Likelihood}\label{maximum-likelihood}}
+
+\showmatmethods
+\showacknow
+\pnasbreak
+
+
+
+% Bibliography
+% \bibliography{pnas-sample}
+
+\end{document}
