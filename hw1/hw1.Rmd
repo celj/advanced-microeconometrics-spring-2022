@@ -272,7 +272,6 @@ plt.1 <- ggplot(df, aes(x = beta, y = ..density..)) +
 plt.1
 ```
 
-
 # Parametrization 2
 
 # GMM
