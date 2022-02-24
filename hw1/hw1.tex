@@ -51,6 +51,17 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
+% From pandoc table feature
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
 
 
 
@@ -280,6 +291,7 @@ Y = DY_1 + (1 - D)Y_0.
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\NormalTok{TOL }\OtherTok{\textless{}{-}} \FloatTok{0.01}
 
 \NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{5000} \CommentTok{\# random sample observations}
 
@@ -298,8 +310,8 @@ Y = DY_1 + (1 - D)Y_0.
 \NormalTok{V }\OtherTok{\textless{}{-}}\NormalTok{ sigmaV }\SpecialCharTok{*}\NormalTok{ eps}
 
 \NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, N),}
-           \FunctionTok{rnorm}\NormalTok{(N, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{9}\NormalTok{),}
-           \FunctionTok{rnorm}\NormalTok{(N, }\DecValTok{1}\NormalTok{, }\DecValTok{9}\NormalTok{))}
+           \FunctionTok{rnorm}\NormalTok{(N, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{),}
+           \FunctionTok{rnorm}\NormalTok{(N, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
 
 \NormalTok{I }\OtherTok{\textless{}{-}}\NormalTok{ (Z }\SpecialCharTok{\%*\%}\NormalTok{ g) }\SpecialCharTok{+}\NormalTok{ V}
 \NormalTok{D }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(I }\SpecialCharTok{\textgreater{}=} \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
@@ -330,7 +342,7 @@ Y = DY_1 + (1 - D)Y_0.
     \FunctionTok{mean}\NormalTok{()}
 
 \NormalTok{MTE }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
-    \FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(net.utility }\SpecialCharTok{{-}}\NormalTok{ V) }\SpecialCharTok{\textless{}=} \FloatTok{0.01}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(net.utility }\SpecialCharTok{{-}}\NormalTok{ V) }\SpecialCharTok{\textless{}=}\NormalTok{ TOL) }\SpecialCharTok{\%\textgreater{}\%}
     \FunctionTok{pull}\NormalTok{(beta) }\SpecialCharTok{\%\textgreater{}\%}
     \FunctionTok{mean}\NormalTok{()}
 \end{Highlighting}
@@ -341,70 +353,183 @@ Y = DY_1 + (1 - D)Y_0.
 \hypertarget{parametrization-2}{%
 \section{Parametrization 2}\label{parametrization-2}}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LATE }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(param, old, new) \{}
+\NormalTok{    Z.old }\OtherTok{\textless{}{-}}\NormalTok{ Z}
+\NormalTok{    Z.new }\OtherTok{\textless{}{-}}\NormalTok{ Z}
+    
+\NormalTok{    Z.old[, param] }\OtherTok{\textless{}{-}}\NormalTok{ old}
+\NormalTok{    Z.new[, param] }\OtherTok{\textless{}{-}}\NormalTok{ new}
+    
+\NormalTok{    I.old }\OtherTok{\textless{}{-}}\NormalTok{ (Z.old }\SpecialCharTok{\%*\%}\NormalTok{ g) }\SpecialCharTok{+}\NormalTok{ V}
+\NormalTok{    D.old }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(I.old }\SpecialCharTok{\textgreater{}=} \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+    
+\NormalTok{    I.new }\OtherTok{\textless{}{-}}\NormalTok{ (Z.new }\SpecialCharTok{\%*\%}\NormalTok{ g) }\SpecialCharTok{+}\NormalTok{ V}
+\NormalTok{    D.new }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(I.new }\SpecialCharTok{\textgreater{}=} \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+    
+\NormalTok{    test }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{((D.old }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\&}\NormalTok{ (D.new }\SpecialCharTok{==} \DecValTok{1}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+    
+\NormalTok{    temp.df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+        \StringTok{\textquotesingle{}beta\textquotesingle{}} \OtherTok{=}\NormalTok{ Y1 }\SpecialCharTok{{-}}\NormalTok{ Y0,}
+        \StringTok{\textquotesingle{}test\textquotesingle{}} \OtherTok{=}\NormalTok{ test}
+\NormalTok{    )}
+    
+\NormalTok{    r }\OtherTok{\textless{}{-}}\NormalTok{ temp.df }\SpecialCharTok{\%\textgreater{}\%}
+        \FunctionTok{filter}\NormalTok{((test }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+        \FunctionTok{pull}\NormalTok{(beta) }\SpecialCharTok{\%\textgreater{}\%}
+        \FunctionTok{mean}\NormalTok{()}
+    
+    \FunctionTok{return}\NormalTok{(r)}
+\NormalTok{\}}
+
+\NormalTok{regress }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(beta) \{}
+\NormalTok{    intercept }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(Y) }\SpecialCharTok{{-}}\NormalTok{ (beta }\SpecialCharTok{*} \FunctionTok{mean}\NormalTok{(D))}
+\NormalTok{    intercept }\SpecialCharTok{+}\NormalTok{ (beta }\SpecialCharTok{*}\NormalTok{ D)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{latez_1--2-z_1-1}{%
 \subsection{\texorpdfstring{\(LATE(z_1 = -2, z'_1 = 1)\)}{LATE(z\_1 = -2, z'\_1 = 1)}}\label{latez_1--2-z_1-1}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\NormalTok{LATE}\FloatTok{.1} \OtherTok{\textless{}{-}} \FunctionTok{LATE}\NormalTok{(}\DecValTok{2}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] 1234
-\end{verbatim}
+\(LATE(z_1 = -2, z'_1 = 1) = 0.2051\).
 
 \hypertarget{latez_2-0-z_2-2}{%
 \subsection{\texorpdfstring{\(LATE(z_2 = 0, z'_2 = 2)\)}{LATE(z\_2 = 0, z'\_2 = 2)}}\label{latez_2-0-z_2-2}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\NormalTok{LATE}\FloatTok{.2} \OtherTok{\textless{}{-}} \FunctionTok{LATE}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] 1234
-\end{verbatim}
+\(LATE(z_2 = 0, z'_2 = 2) = 0.1982\).
 
 \hypertarget{ivz_1}{%
 \subsection{\texorpdfstring{\(IV(Z_1)\)}{IV(Z\_1)}}\label{ivz_1}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{beta.IV.Z1 }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{2}\NormalTok{], Y) }\SpecialCharTok{/} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{2}\NormalTok{], D)}
+\NormalTok{beta.IV.Z1 }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{2}\NormalTok{], Y) }\SpecialCharTok{/} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{2}\NormalTok{], D))[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+\NormalTok{Y.IV.Z1 }\OtherTok{\textless{}{-}} \FunctionTok{regress}\NormalTok{(beta.IV.Z1)}
 \end{Highlighting}
 \end{Shaded}
 
-\(\hat{\beta}_{\text{IV}} (Z_1) = 0.2032\).
+\(\hat{\beta}_{\text{IV}} (Z_1) = 0.2045\).
 
 \hypertarget{ivz_2}{%
 \subsection{\texorpdfstring{\(IV(Z_2)\)}{IV(Z\_2)}}\label{ivz_2}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{beta.IV.Z2 }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{3}\NormalTok{], Y) }\SpecialCharTok{/} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{3}\NormalTok{], D)}
+\NormalTok{beta.IV.Z2 }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{3}\NormalTok{], Y) }\SpecialCharTok{/} \FunctionTok{cov}\NormalTok{(Z[, }\DecValTok{3}\NormalTok{], D))[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+\NormalTok{Y.IV.Z2 }\OtherTok{\textless{}{-}} \FunctionTok{regress}\NormalTok{(beta.IV.Z2)}
 \end{Highlighting}
 \end{Shaded}
 
-\(\hat{\beta}_{\text{IV}} (Z_2) = 0.2046\).
+\(\hat{\beta}_{\text{IV}} (Z_2) = 0.206\).
 
 \hypertarget{ols}{%
 \subsection{\texorpdfstring{\(OLS\)}{OLS}}\label{ols}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{beta.OLS }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Y, D) }\SpecialCharTok{/} \FunctionTok{var}\NormalTok{(D)}
+\NormalTok{beta.OLS }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{cov}\NormalTok{(D, Y) }\SpecialCharTok{/} \FunctionTok{var}\NormalTok{(D))[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+\NormalTok{Y.OLS }\OtherTok{\textless{}{-}} \FunctionTok{regress}\NormalTok{(beta.OLS)}
 \end{Highlighting}
 \end{Shaded}
 
-\(\hat{\beta}_{\text{OLS}} = 0.2186\).
+\(\hat{\beta}_{\text{OLS}} = 0.237\).
 
 \hypertarget{gmm}{%
 \section{GMM}\label{gmm}}
 
+Using \(Z = (Z_1, Z_2)\) as instruments and
+\(\displaystyle \hat{V}_0 = \frac{1}{n} \sum_{i = 1}^n z_i' z_i\) as the
+weighting matrix, we can estimate our model by the generalized method of
+moments.
+
+Hence, we can obtain
+
+\[
+\hat{\beta}_{\text{GMM}} = \left( D' Z V_0^{-1} Z' D \right)^{-1} D' Z V_0^{-1} Z' Y.
+\]
+
+Note that we can rewrite \(\displaystyle \hat{V}_0 = \frac{1}{n} Z' Z\).
+
+Thus,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{subset.Z }\OtherTok{\textless{}{-}}\NormalTok{ Z[, }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{]}
+
+\NormalTok{V0 }\OtherTok{\textless{}{-}}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{/}\NormalTok{ N) }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{t}\NormalTok{(subset.Z) }\SpecialCharTok{\%*\%}\NormalTok{ subset.Z)}
+
+\NormalTok{beta.GMM }\OtherTok{\textless{}{-}}
+\NormalTok{    (}
+        \FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(D) }\SpecialCharTok{\%*\%}\NormalTok{ subset.Z }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(V0) }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(subset.Z) }\SpecialCharTok{\%*\%}\NormalTok{ D) }\SpecialCharTok{\%*\%}
+            \FunctionTok{t}\NormalTok{(D) }\SpecialCharTok{\%*\%}\NormalTok{ subset.Z }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(V0) }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(subset.Z) }\SpecialCharTok{\%*\%}\NormalTok{ Y}
+\NormalTok{    )[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+
+\NormalTok{Y.GMM }\OtherTok{\textless{}{-}} \FunctionTok{regress}\NormalTok{(beta.GMM)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Estimator & Estimate & Standard Error \\
+\midrule
+\endhead
+\(\hat{\beta}_{\text{GMM}}\) & 0.2087 & 0.0321 \\
+\(\hat{\beta}_{\text{IV}} (Z_1)\) & 0.2045 & 0.0331 \\
+\(\hat{\beta}_{\text{IV}} (Z_2)\) & 0.206 & 0.0327 \\
+\(\hat{\beta}_{\text{OLS}}\) & 0.237 & 0.0288 \\
+\bottomrule
+\end{longtable}
+
 \hypertarget{likelihood-function}{%
 \section{Likelihood Function}\label{likelihood-function}}
+
+We know that
+
+\begin{align*}
+Pr\left(D = 1 \mid Z\right) &= Pr\left(\gamma Z + V \geq 0 \right) \\
+&= Pr\left( \frac{-Z\gamma}{\sigma^*_V} \leq \epsilon \right) \\
+&= 1 - Pr\left( \epsilon \leq \frac{-Z\gamma}{\sigma^*_V} \right) \\
+&= 1 - \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right),
+\end{align*}
+
+and
+
+\begin{align*}
+Pr\left(D = 0 \mid Z\right) &= Pr\left(\gamma Z + V < 0 \right) \\
+&= Pr\left( \epsilon \leq \frac{-Z\gamma}{\sigma^*_V} \right) \\
+&= \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right).
+\end{align*}
+
+Hence,
+
+\begin{align*}
+\mathcal{L} &= \prod_{d_i = 0} \left[ \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right] \prod_{d_i = 1} \left[ 1-  \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right] \\
+&= \prod_{i} \left[ \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right]^{1 - d_i} \left[ 1-  \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right]^{d_i},
+\end{align*}
+
+and
+
+\begin{align*}
+\ell &= \log\mathcal{L} \\
+&= \sum_{i} (1 - d_i) \log \left( \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right) \right) \\
+&+ \sum_{i} d_i \log \left( 1 - \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right) \right) \\
+&= \sum_{i} (1 - d_i) \log \left( \Phi \left( \frac{-\gamma_0 - z_1\gamma_1 - z_2\gamma_2}{\sigma^*_V} \right) \right) \\
+&+ \sum_{i} d_i \log \left( 1 - \Phi \left( \frac{-\gamma_0 - z_1\gamma_1 - z_2\gamma_2}{\sigma^*_V} \right) \right).
+\end{align*}
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}

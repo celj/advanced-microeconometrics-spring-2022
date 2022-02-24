@@ -186,6 +186,7 @@ $$
 
 ```{r}
 set.seed(1234)
+TOL <- 0.01
 
 N <- 5000 # random sample observations
 
@@ -204,8 +205,8 @@ U0 <- sigma0 * eps
 V <- sigmaV * eps
 
 Z <- cbind(rep(1, N),
-           rnorm(N, -1, 9),
-           rnorm(N, 1, 9))
+           rnorm(N, -1, 3),
+           rnorm(N, 1, 3))
 
 I <- (Z %*% g) + V
 D <- ifelse(I >= 0, 1, 0)
@@ -236,7 +237,7 @@ TUT <- df %>%
     mean()
 
 MTE <- df %>%
-    filter(abs(net.utility - V) <= 0.01) %>%
+    filter(abs(net.utility - V) <= TOL) %>%
     pull(beta) %>%
     mean()
 ```
@@ -244,6 +245,7 @@ MTE <- df %>%
 ```{r, echo=FALSE}
 blue <- '#1111ff'
 pink <- '#ff11ff'
+red <- '#ff1111'
 
 plt.1 <- ggplot(df, aes(x = beta, y = ..density..)) +
     geom_density(alpha = 0.4, fill = pink) +
@@ -259,7 +261,7 @@ plt.1 <- ggplot(df, aes(x = beta, y = ..density..)) +
     geom_text(aes(x = TUT + 0.003, y = 5, label = 'TUT'), angle = 90) +
     geom_vline(xintercept = MTE,
                linetype = 'dashed',
-               colour = 'red') +
+               colour = red) +
     geom_text(aes(x = MTE + 0.003, y = 5, label = 'MTE'), angle = 90) +
     labs(
         title = 'Distribution of Gains',
@@ -282,22 +284,62 @@ plt.1
 
 # Parametrization 2
 
+```{r}
+LATE <- function(param, old, new) {
+    Z.old <- Z
+    Z.new <- Z
+    
+    Z.old[, param] <- old
+    Z.new[, param] <- new
+    
+    I.old <- (Z.old %*% g) + V
+    D.old <- ifelse(I.old >= 0, 1, 0)
+    
+    I.new <- (Z.new %*% g) + V
+    D.new <- ifelse(I.new >= 0, 1, 0)
+    
+    test <- ifelse((D.old == 0) & (D.new == 1), 1, 0)
+    
+    temp.df <- data.frame(
+        'beta' = Y1 - Y0,
+        'test' = test
+    )
+    
+    r <- temp.df %>%
+        filter((test == 1)) %>%
+        pull(beta) %>%
+        mean()
+    
+    return(r)
+}
+
+regress <- function(beta) {
+    intercept <- mean(Y) - (beta * mean(D))
+    intercept + (beta * D)
+}
+```
+
 ## $LATE(z_1 = -2, z'_1 = 1)$
 
 ```{r}
-print(1234)
+LATE.1 <- LATE(2, -2, 1)
 ```
+
+$LATE(z_1 = -2, z'_1 = 1) = `r LATE.1`$.
 
 ## $LATE(z_2 = 0, z'_2 = 2)$
 
 ```{r}
-print(1234)
+LATE.2 <- LATE(3, 0, 2)
 ```
+
+$LATE(z_2 = 0, z'_2 = 2) = `r LATE.2`$.
 
 ## $IV(Z_1)$
 
 ```{r}
-beta.IV.Z1 <- cov(Z[, 2], Y) / cov(Z[, 2], D)
+beta.IV.Z1 <- (cov(Z[, 2], Y) / cov(Z[, 2], D))[1, 1]
+Y.IV.Z1 <- regress(beta.IV.Z1)
 ```
 
 $\hat{\beta}_{\text{IV}} (Z_1) = `r beta.IV.Z1`$.
@@ -305,7 +347,8 @@ $\hat{\beta}_{\text{IV}} (Z_1) = `r beta.IV.Z1`$.
 ## $IV(Z_2)$
 
 ```{r}
-beta.IV.Z2 <- cov(Z[, 3], Y) / cov(Z[, 3], D)
+beta.IV.Z2 <- (cov(Z[, 3], Y) / cov(Z[, 3], D))[1, 1]
+Y.IV.Z2 <- regress(beta.IV.Z2)
 ```
 
 $\hat{\beta}_{\text{IV}} (Z_2) = `r beta.IV.Z2`$.
@@ -313,14 +356,82 @@ $\hat{\beta}_{\text{IV}} (Z_2) = `r beta.IV.Z2`$.
 ## $OLS$
 
 ```{r}
-beta.OLS <- cov(D, Y) / var(D)
+beta.OLS <- (cov(D, Y) / var(D))[1, 1]
+Y.OLS <- regress(beta.OLS)
 ```
 
 $\hat{\beta}_{\text{OLS}} = `r beta.OLS`$.
 
 # GMM
 
+Using $Z = (Z_1, Z_2)$ as instruments and $\displaystyle \hat{V}_0 = \frac{1}{n} \sum_{i = 1}^n z_i' z_i$ as the weighting matrix, we can estimate our model by the generalized method of moments.
+
+Hence, we can obtain
+
+$$
+\hat{\beta}_{\text{GMM}} = \left( D' Z V_0^{-1} Z' D \right)^{-1} D' Z V_0^{-1} Z' Y.
+$$
+
+Note that we can rewrite $\displaystyle \hat{V}_0 = \frac{1}{n} Z' Z$.
+
+Thus,
+
+```{r}
+subset.Z <- Z[, -1]
+
+V0 <- (1 / N) * (t(subset.Z) %*% subset.Z)
+
+beta.GMM <-
+    (
+        solve(t(D) %*% subset.Z %*% solve(V0) %*% t(subset.Z) %*% D) %*%
+            t(D) %*% subset.Z %*% solve(V0) %*% t(subset.Z) %*% Y
+    )[1, 1]
+
+Y.GMM <- regress(beta.GMM)
+```
+
+| Estimator| Estimate | Standard Error |
+|:---|:---|:---|
+| $\hat{\beta}_{\text{GMM}}$ | `r beta.GMM` | `r sd(Y - Y.GMM)` |
+| $\hat{\beta}_{\text{IV}} (Z_1)$ | `r beta.IV.Z1` | `r sd(Y - Y.IV.Z1)` |
+| $\hat{\beta}_{\text{IV}} (Z_2)$ | `r beta.IV.Z2` | `r sd(Y - Y.IV.Z2)` |
+| $\hat{\beta}_{\text{OLS}}$ | `r beta.OLS` | `r sd(Y - Y.OLS)` |
+
 # Likelihood Function
+
+We know that
+
+\begin{align*}
+Pr\left(D = 1 \mid Z\right) &= Pr\left(\gamma Z + V \geq 0 \right) \\
+&= Pr\left( \frac{-Z\gamma}{\sigma^*_V} \leq \epsilon \right) \\
+&= 1 - Pr\left( \epsilon \leq \frac{-Z\gamma}{\sigma^*_V} \right) \\
+&= 1 - \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right),
+\end{align*}
+
+and
+
+\begin{align*}
+Pr\left(D = 0 \mid Z\right) &= Pr\left(\gamma Z + V < 0 \right) \\
+&= Pr\left( \epsilon \leq \frac{-Z\gamma}{\sigma^*_V} \right) \\
+&= \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right).
+\end{align*}
+
+Hence,
+
+\begin{align*}
+\mathcal{L} &= \prod_{d_i = 0} \left[ \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right] \prod_{d_i = 1} \left[ 1-  \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right] \\
+&= \prod_{i} \left[ \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right]^{1 - d_i} \left[ 1-  \Phi \left( \frac{-Z\gamma}{\sigma^*_v} \right) \right]^{d_i},
+\end{align*}
+
+and
+
+\begin{align*}
+\ell &= \log\mathcal{L} \\
+&= \sum_{i} (1 - d_i) \log \left( \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right) \right) \\
+&+ \sum_{i} d_i \log \left( 1 - \Phi \left( \frac{-Z\gamma}{\sigma^*_V} \right) \right) \\
+&= \sum_{i} (1 - d_i) \log \left( \Phi \left( \frac{-\gamma_0 - z_1\gamma_1 - z_2\gamma_2}{\sigma^*_V} \right) \right) \\
+&+ \sum_{i} d_i \log \left( 1 - \Phi \left( \frac{-\gamma_0 - z_1\gamma_1 - z_2\gamma_2}{\sigma^*_V} \right) \right).
+\end{align*}
 
 # Discussion
 
