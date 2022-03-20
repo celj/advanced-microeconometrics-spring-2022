@@ -15,6 +15,7 @@
 *.spec
 *.utf8.md
 *_cache/
+*_files/
 .Python
 .RData
 .Rapp.history
