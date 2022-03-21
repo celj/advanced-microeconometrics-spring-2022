@@ -54,7 +54,7 @@ I = Z\gamma - V,
 $$
 where $Z$ and $V$ represent observables and unobservables, respectively. Thus, we can define a binary variable $D$ indicating treatment status,
 $$
-D = \mathbb{1} [I \geq 0].
+D = 1 [I \geq 0].
 $$
 Finally, we assume that the error terms in the model are not independent even conditioning on the observables, i.e. $U_1 \not\ind U_0 \not\ind V \mid Z$, but $(U_1, U_0, V) \ind Z$.
 
