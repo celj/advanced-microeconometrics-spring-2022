@@ -1,0 +1,37 @@
+---
+title: 'How much should we trust differences-in-differences estimates?'
+author: |
+  | Carlos Lezama
+  | Advanced Microeconometrics
+  | ITAM
+date: 'March 31, 2022'
+output:
+  beamer_presentation:
+    colortheme: 'seagull'
+    fonttheme: 'structurebold'
+    slide_level: 3
+    theme: 'Pittsburgh'
+    toc: true
+---
+
+# Introduction
+
+# A Survey of DD Papers
+
+# Overrejection in DD Estimation
+
+# Solutions
+
+## Parametric Methods
+
+## Block Bootstrap
+
+## Ignoring Time Series Information
+
+## Empirical Variance-Covariance Matrix
+
+## Arbitrary Variance-Covariance Matrix
+
+## Summary
+
+# Conclusion
