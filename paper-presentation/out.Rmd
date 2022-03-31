@@ -32,9 +32,9 @@ DD estimates and their standard errors most often derive from using Ordinary Lea
 
 One then typically estimates the following regression using OLS:
 
-$$
+\begin{equation}
 Y_{ist} = A_s + B_t + cX_{ist} + \beta I_{st} + \varepsilon_{ist},
-$$
+\end{equation}
 
 where the subscripts $i$, $s$, and $t$ stand for the individual, group (such as a state), and time (such as a year), respectively. Furthermore, let $Y$ be our outcome of interest, $I$ be a dummy, $A$ and $B$ be fixed effects, $X$ be relevant individual controls, and $\varepsilon$ be an error term.
 
@@ -123,7 +123,56 @@ Papers were classified as "DD" if they focus on specific interventions and use u
 
 # Overrejection in DD Estimation
 
-The survey above suggests that most DD papers may report standard errors that understate the standard deviation of the DD estimator. To illustrate the magnitude of the problem they turn to a specific data set: a sample of women's wages from the Current Population Survey (CPS).
+## Data
+
+The survey above suggests that most DD papers may report standard errors that understate the standard deviation of the DD estimator. To illustrate the magnitude of the problem they turn to a sample of women's wages from the Current Population Survey (CPS).
+
+More specifically, data on:
+
+* Women in their fourth interview month in the Merged Outgoing Rotation Group of the CPS.
+* Years: 1979 -- 1999.
+* Age: 25 -- 50 y/o.
+* Information on weekly earnings, employment status, education, age, and state of residence.
+
+## Data
+
+### Summary
+
+The sample contains:
+
+* Nearly 900,000 observations.
+* Approximately 540,000 women report strictly positive weekly earnings.
+* $\text{wage} = \log(\text{weekly earnings})$.
+
+This generates ($50 \times 21 = 1050$) state-year cells, with each cell containing on average a little more than 500 women with strictly positive earnings.
+
+## Methodology
+
+The correlogram of the wage residuals was informative enough to estimate first, second, and third autocorrelation coefficients for the mean state-year residuals from a regression of wages on state and year dummies such that they equal 0.51, 0.44, and 0.31, respectively (obtained by a simple OLS regression of the residuals on the corresponding lagged residuals) --- which are high and statistically significant.
+
+## Methodology
+
+Subsequently, in the DD context:
+
+1. Randomly, draw a $\text{year} \sim \mathcal{U}(1985, 1995)$.
+2. Select exactly half states (25) at random and designate them as "affected" by the law such that
+
+$$
+I_{st} =
+\begin{cases}
+1 & \text{for all women that live in an affected state} \\
+  & \text{after the intervention date,} \\
+0 & \text{otherwise}.
+\end{cases}
+$$
+
+3. Estimate equation (1) using OLS on these placebo laws.
+
+# "If hundreds of researchers analyzed the effects of various laws in the CPS, what fraction would find a significant effect even when the laws have no effect?"
+
+## Methodology
+
+If OLS were to provide consistent standard errors, we would expect to reject the null hypothesis of no effect ($\beta = 0$) roughly 5 percent of the time when using a threshold of 1.96 for the absolute $t$-statistic.
 
 # Solutions
 
