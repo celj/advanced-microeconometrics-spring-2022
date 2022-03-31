@@ -9,12 +9,12 @@ output:
   beamer_presentation:
     colortheme: 'seagull'
     fonttheme: 'structurebold'
+    includes:
+      in_header: 'macros.tex'
     slide_level: 2
     theme: 'Pittsburgh'
     toc: true
 ---
-
-\newtheorem*{remark}{Remark}
 
 # Introduction
 
@@ -56,13 +56,74 @@ Three factors make serial correlation an especially important issue in the DD co
 
 These three factors reinforce each other so that the standard error for $\hat{\beta}$ could severely understate the standard deviation of $\hat{\beta}$.
 
+## Introduction
+
+To assess the extent of this problem, they examine how DD performs on placebo laws, where treated states and year of passage are chosen at random.
+
+Placebo tests diagnose problems with research designs in observational studies. When a researcher estimates a treatment effect based on observational data, the estimator may be biased by confounders, model misspecification, differential measurement error, or other flaws; the researcher may also have constructed confidence intervals incorrectly, such that we would reject the null hypothesis too frequently (or infrequently) under the null. A placebo test checks for an association that should be absent if the research design is sound but not otherwise. Placebo tests can thus be seen as a strategy for checking the soundness of a research finding and, more broadly, improving causal inference.
+
 # A Survey of DD Papers
 
-Text.
+Papers were classified as "DD" if they focus on specific interventions and use units unaffected by the law as a control group.
+
+|  |  |
+| :--- | :---: |
+| Number of DD papers | 92 |
+| Number with more than 2 periods of data | 69 |
+| Number which collapse data into before-after | 4 |
+| Number with potential serial correlation problem | 65 |
+| Number with some serial correlation correction | 5 |
+| GLS | 4 |
+| Arbitrary variance-covariance matrix | 1 |
+| Number with potential clustering problem | 80 |
+| Number which deal with it | 36 |
+: Survey of DD papers
+
+## A Survey of DD Papers
+
+| Percentile | Value |
+| :---: | :---: |
+| 1% | 3 |
+| 5% | 3 |
+| 10% | 4 |
+| 25% | 5.75 |
+| 50% | 11 |
+| 75% | 21.5 |
+| 90% | 36 |
+| 95% | 51 |
+| 99% | 83 |
+| Average | 16.5 |
+: Distribution of time span for papers with more than 2 periods
+
+## A Survey of DD papers
+
+|  |  |
+| :--- | :---: |
+| Employment | 18 |
+| Wages | 13 |
+| Health/medical expenditure | 8 |
+| Unemployment | 6 |
+| Fertility/teen motherhood | 4 |
+| Insurance | 4 |
+| Poverty | 3 |
+| Consumption/savings | 3 |
+: Most commonly used dependent variables
+
+## A Survey of DD papers
+
+|  |  |
+| :--- | :---: |
+| Graph dynamics of effect | 15 |
+| See if effect is persistent | 2 |
+| Attempt to do triple-differences (DDD) | 11 |
+| Include time trend specific to treated states | 7 |
+| Look for effect prior to intervention | 3 |
+| Include lagged dependent variable | 3 |
+: Informal techniques used to assess endogeneity
 
 # Overrejection in DD Estimation
 
-Text.
+The survey above suggests that most DD papers may report standard errors that understate the standard deviation of the DD estimator. To illustrate the magnitude of the problem they turn to a specific data set: a sample of women's wages from the Current Population Survey (CPS).
 
 # Solutions
 

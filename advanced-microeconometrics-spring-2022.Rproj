@@ -13,3 +13,5 @@ RnwWeave: Sweave
 LaTeX: XeLaTeX
 
 AutoAppendNewline: Yes
+
+SpellingDictionary: en_US

@@ -13,7 +13,6 @@
 *.sage.py
 *.so
 *.spec
-*.tex
 *.utf8.md
 *_cache/
 *_files/
