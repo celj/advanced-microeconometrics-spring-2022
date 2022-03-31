@@ -174,32 +174,96 @@ $$
 
 If OLS were to provide consistent standard errors, we would expect to reject the null hypothesis of no effect ($\beta = 0$) roughly 5 percent of the time when using a threshold of 1.96 for the absolute $t$-statistic.
 
+## Methodology
+
+![](fig/A.png)
+
+## Methodology
+
+![](fig/B.png)
+
+## Methodology
+
+These results demonstrate that, in the presence of positive serial correlation, conventional DD estimation leads to gross overestimation of $t$-statistics and significance levels.
+
 # Solutions
+
+![](fig/varying.png)
 
 ## Parametric Methods
 
-Text.
+A first possible solution to the serial correlation problem would be to specify an autocorrelation structure for the error term, estimate its parameters, and use these parameters to compute standard errors.
+
+## Parametric Methods
+
+![](fig/param.png)
 
 ## Block Bootstrap
 
-Text.
+This variant of bootstrap maintains the autocorrelation structure by keeping all the observations that belong to the same group (e.g., state) together. In practice, we bootstrap the $t$-statistic as follows. For each placebo intervention we compute the absolute $t$-statistic $t = \lvert \hat{\beta} / \text{SE} (\hat{\beta}) \rvert$, using the OLS estimate of $\beta$ and its standard error. We then construct a bootstrap sample by drawing with replacement 50 matrices $(\bar{Y}_s, V_s)$, where $\bar{Y}_s$ is the entire time series of observations for state $s$, and $V_s$ is the matrix of state dummies, time dummies, and treatment dummy for state $s$.
+
+## Block Bootstrap
+
+We then run OLS on this sample. obtain an estimate $\hat{\beta}_r$ and construct the absolute $t$-statistic $t_r = \lvert (\hat{\beta}_r - \hat{\beta}) / \text{SE} (\hat{\beta}_r) \rvert$.
+
+\begin{remark}
+The difference between the distribution of $t_r$ and the sampling distribution of $t$ becomes small as $N$ goes to infinity, even in presence of arbitrary autocorrelation within states and heteroskedasticity.
+\end{remark}
+
+## Block Bootstrap
+
+![](fig/bootstrap.png)
 
 ## Ignoring Time Series Information
 
-Text.
+### Simple Aggregation
+
+One could simply average the data before and after the law and run equation (1) on this averaged outcome variable in a panel of length 2 --- this solution will work only for laws that are passed at the same time for all the treated states.
+
+### Residual Aggregation
+
+First, one can regress $Y_{st}$ on state fixed effects, year dummies, and any relevant covariates. One can then divide the residuals of the treatment states only into two groups: residuals from years before the laws, and residuals from years after the laws. The estimate of the laws’ effect and its standard error can then be obtained from an OLS regression in this two-period panel. It also does well when the laws are staggered over time.
+
+## Ignoring Time Series Information
+
+![](fig/ignore.png)
 
 ## Empirical Variance-Covariance Matrix
 
-Text.
+Suppose that the autocorrelation process is the same across all states and that there is **no** cross-section **heteroskedasticity**. In this case, if the data are sorted by states, and years, the variance-covariance matrix of the error term is block diagonal. Each of these blocks is symmetric, and the element $(i, i + j)$ is the correlation between $\varepsilon_i$ and $\varepsilon_{i - j}$. We can therefore use the variation across the 50 states to estimate each element of this matrix, and use this estimated matrix to compute standard errors.
+
+\begin{remark}
+Under our initial assumption, this method will produce consistent estimates of the standard error as $N \longrightarrow \infty$.
+\end{remark}
+
+## Empirical Variance-Covariance Matrix
+
+![](fig/empirical.png)
 
 ## Arbitrary Variance-Covariance Matrix
 
-Text.
+Since the assumption in the previous method is likely to be violated in practice, this method can be generalized to an estimator of the variance-covariance matrix which is consistent in the presence of any correlation pattern within states over time.
 
-## Summary
+## Arbitrary Variance-Covariance Matrix
 
-Text.
+This estimator for the variance-covariance matrix is given by
+
+$$
+W = (V'V)^{-1} \left( \sum_{j = 1}^N u_j' u_j \right) (V'V)^{-1},
+$$
+
+and $u_j$ is defined as follows
+
+$$
+u_j = \sum_{t = 1}^T e_{jt}v_{jt},
+$$
+
+where $e_{jt}$ is the estimated residual for state $i$ at time $t$, and $v_{jt}$ is the row vector of dependent variables.
+
+## Arbitrary Variance-Covariance Matrix
+
+![](fig/arbitrary.png)
 
 # Conclusion
 
-Text.
+This study suggests that, because of serial correlation, conventional DD standard errors may grossly understate the standard deviation of the estimated treatment effects, leading to serious overestimation of $t$-statistics and significance levels. In other words, it is possible that too many false rejections of the null hypothesis of no effect have taken place.
