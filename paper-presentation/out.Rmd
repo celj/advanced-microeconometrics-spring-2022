@@ -4,34 +4,54 @@ author: |
   | Carlos Lezama
   | Advanced Microeconometrics
   | ITAM
-date: 'March 31, 2022'
+date: 'Spring 2022'
 output:
   beamer_presentation:
     colortheme: 'seagull'
     fonttheme: 'structurebold'
-    slide_level: 3
+    slide_level: 2
     theme: 'Pittsburgh'
     toc: true
 ---
 
 # Introduction
 
+Text.
+
 # A Survey of DD Papers
 
+Text.
+
 # Overrejection in DD Estimation
+
+Text.
 
 # Solutions
 
 ## Parametric Methods
 
+Text.
+
 ## Block Bootstrap
+
+Text.
 
 ## Ignoring Time Series Information
 
+Text.
+
 ## Empirical Variance-Covariance Matrix
+
+Text.
 
 ## Arbitrary Variance-Covariance Matrix
 
+Text.
+
 ## Summary
 
+Text.
+
 # Conclusion
+
+Text.
