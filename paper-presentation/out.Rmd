@@ -252,7 +252,7 @@ $$
 W = (V'V)^{-1} \left( \sum_{j = 1}^N u_j' u_j \right) (V'V)^{-1},
 $$
 
-and $u_j$ is defined as follows
+where $V$ is matrix of independent variables (year dummies, state dummies and treatment dummy). Furthermore, $u_j$ is defined as follows
 
 $$
 u_j = \sum_{t = 1}^T e_{jt}v_{jt},
