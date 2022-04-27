@@ -36,7 +36,7 @@ where $Y_1$ is the potential outcome (i.e., `wages`) in the counterfactual of at
 Individual decide wheter or not to attend a private high school based on a latent variable $I$:
 
 $$
-I = Z\gamma + \theta\alpha_1 + V,
+I = Z\gamma + \theta\alpha_I + V,
 $$
 
 where $Z$ include observable demographics and instruments, and $V$ is an idiosyncratic error term with mean zero and unit variance. Note that the unobservable factor is also present in this part of the model. We can thus define a binary variable $D$ indicating treatment status,
