@@ -65,7 +65,13 @@ $$
 T_k = \theta\alpha_{T_k} + \varepsilon_k, \quad \forall k = 1, 2, 3, 4,
 $$
 
-such that $\text{Cov}(T_i, T_j) = \alpha_{T_i}\alpha_{T_j}\sigma^2_\theta$ for any $i \neq j$. This way, we can build a system of $k$ equations
+such that $\text{Cov}(T_i, T_j) = \alpha_{T_i}\alpha_{T_j}\sigma^2_\theta$ for any $i \neq j$. This way, we can obtain the values for the rest of the loadings in the measuring system such that
+
+$$
+\frac{T_k}{\alpha_{T_k}} = \theta + \varepsilon^*_{T_k}, \quad \forall k = 1, 2, 3, 4,
+$$
+
+where $\varepsilon^*_{T_k} = \varepsilon_{T_k} / \alpha_{T_k}$. Thus, we can compute the densities of every $\varepsilon_{T_k}$, and $\theta$. The assumption that one of the loadings in the measuring system is equal to one is necessary in order to compute the other ones; otherwise, we may have $n$ equations and $n + 1$ unknowns.
 
 ### 2
 
