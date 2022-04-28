@@ -71,9 +71,38 @@ $$
 \frac{T_k}{\alpha_{T_k}} = \theta + \varepsilon^*_{T_k}, \quad \forall k = 1, 2, 3, 4,
 $$
 
-where $\varepsilon^*_{T_k} = \varepsilon_{T_k} / \alpha_{T_k}$. Thus, we can compute the densities of every $\varepsilon_{T_k}$, and $\theta$. The assumption that one of the loadings in the measuring system is equal to one is necessary in order to compute the other ones; otherwise, we may have $n$ equations and $n + 1$ unknowns.
+where $\varepsilon^*_{T_k} = \varepsilon_{T_k} / \alpha_{T_k}$. Thus, we can compute the densities of every $\varepsilon_{T_k}$, and $\theta$. The assumption that one of the loadings in the measuring system is equal to one is necessary in order to compute the other ones; otherwise, we may have $n$ equations and $n + 1$ unknowns. Namely, we can approximate the distribution of $\theta$ — assuming mean zero — as a mixture of normal distributions as shown below:
+
+$$
+\theta = p\mathcal{N}(\mu_1, \sigma^2_1) + (1 - p)\mathcal{N}(\mu_2, \sigma^2_2).
+$$
 
 ### 2
+
+We may expect that our fitted model coefficients are unbiased, but there is a endogeneity problem in our case since our error terms contain part of the "unobserved abilities". Therefore, our assumptions for our OLS to estimate the **best linear predictor** do not hold.
+
+```R
+Call:
+lm(formula = wage ~ privateHS + male + north + center, data = data.frame(data))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.6353 -0.4254  0.2473  0.7468  2.4423 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.75885    0.05362 144.689  < 2e-16 ***
+privateHS    0.12157    0.04527   2.685  0.00729 ** 
+male         0.29620    0.04332   6.837 9.86e-12 ***
+north        0.48118    0.10199   4.718 2.50e-06 ***
+center       0.25462    0.05103   4.990 6.41e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.151 on 2834 degrees of freedom
+Multiple R-squared:  0.03264,	Adjusted R-squared:  0.03128 
+F-statistic: 23.91 on 4 and 2834 DF,  p-value: < 2.2e-16
+```
 
 ### 3
 
