@@ -31,7 +31,7 @@ Y_0 &= X\beta_0 + \theta\alpha_0 + U_0,
 \end{align*}
 $$
 
-where $Y_1$ is the potential outcome (i.e., `wages`) in the counterfactual of attending a private high school, and $Y_0$ is similarly defined for the counterfactual of attending a public high school. All relevant observable demographics are included in $X$, while $\theta$ is the unobserved one-dimensional factor (i.e., ability) determining labour market outcomes. The unobserved factor is normally distributed with mean zero and standard deviation $\sigma_\theta$. The terms $U_1$ and $U_0$ are idiosyncratic error terms that are normally distributed with mean zero and standard deviations $\sigma_1$ and $\sigma_2$, respectively.
+where $Y_1$ is the potential outcome (i.e., `wages`) in the counterfactual of attending a private high school, and $Y_0$ is similarly defined for the counterfactual of attending a public high school. All relevant observable demographics are included in $X$, while $\theta$ is the unobserved one-dimensional factor (i.e., ability) determining labour market outcomes. The unobserved factor is normally distributed with mean zero and standard deviation $\sigma_\theta$. The terms $U_1$ and $U_0$ are idiosyncratic error terms that are normally distributed with mean zero and standard deviations $\sigma_1$ and $\sigma_0$, respectively.
 
 Individual decide wheter or not to attend a private high school based on a latent variable $I$:
 
