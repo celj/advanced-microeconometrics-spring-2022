@@ -27,3 +27,5 @@ options = optimoptions(@fminunc, 'Algorithm', 'quasi-newton', 'Display', 'iter',
 [estimates, estimatesF, exitflag, output, grad, hessian] = fminunc('roy_loglikelihood', guess, options);
 
 runtime = toc;
+
+se = sqrt(diag(inv(hessian)));

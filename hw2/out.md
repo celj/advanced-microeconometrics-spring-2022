@@ -56,3 +56,35 @@ where $T_k$ is the test score $k$, $W$ include demographics determining test sco
 Finally, we assume that the error terms in the model are all independent from each other conditioning on the observables and the unobserved factor, i.e., $U_1 \perp\!\!\!\perp U_0 \perp\!\!\!\perp V \perp\!\!\!\perp \varepsilon \mid X, Z, W, \theta$, and $\theta$ is independent of all observables.
 
 For the empirical implementation of the model, in $X$ include `male`, `north`, and `center`. In $Z$ include all variables in $X$ plus `share_private` and `avg_price`. In $W$ include `male`, `momschoolingX`, `dadschoolingX`, `broken_homeX`, `incomehhX`, `north`, and `center`. The outcome variable is `wage`. $D$ is `privateHS`. And, the measurement system is comprised by the four test scores `test_X`.
+
+### 1
+
+As stated in Heckman, et al. (2003), we may have
+
+$$
+T_k = \theta\alpha_{T_k} + \varepsilon_k, \quad \forall k = 1, 2, 3, 4,
+$$
+
+such that $\text{Cov}(T_i, T_j) = \alpha_{T_i}\alpha_{T_j}\sigma^2_\theta$ for any $i \neq j$. This way, we can build a system of $k$ equations
+
+### 2
+
+### 3
+
+### 4
+
+### 5
+
+### 6
+
+### 7
+
+### 8
+
+### 9
+
+### 10
+
+### 11
+
+### 12
