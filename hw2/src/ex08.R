@@ -1,5 +1,7 @@
 source('src/data.R')
 
+n <- 10000
+
 bootstrap <- function(df, samples, resampling_size) {
     output <- matrix(NA, nrow = 0, ncol = dim(df)[2])
     
@@ -13,4 +15,9 @@ bootstrap <- function(df, samples, resampling_size) {
     return(output)
 }
 
-sim_data <- bootstrap(data, 10000, 10)
+sim_data <- bootstrap(data, n, 100)
+
+# sim_data[, c(5, 7:20)] <- round(sim_data[, c(5, 7:20)])
+
+summary(data[, c(1:5, 7:20)])[4, ]
+summary(sim_data[, c(1:5, 7:20)])[4, ]
