@@ -95,7 +95,7 @@ Papers were classified as "DD" if they focus on specific interventions and use u
 | Average | 16.5 |
 : Distribution of time span for papers with more than 2 periods
 
-## A Survey of DD papers
+## A Survey of DD Papers
 
 |  |  |
 | :--- | :---: |
@@ -109,7 +109,7 @@ Papers were classified as "DD" if they focus on specific interventions and use u
 | Consumption/savings | 3 |
 : Most commonly used dependent variables
 
-## A Survey of DD papers
+## A Survey of DD Papers
 
 |  |  |
 | :--- | :---: |
